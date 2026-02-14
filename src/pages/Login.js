@@ -1,3 +1,4 @@
+import { loginUser } from '../firebase.js';
 
 export class LoginPage {
   constructor() { }
@@ -33,26 +34,36 @@ export class LoginPage {
   afterRender() {
     const form = document.getElementById('login-form');
     if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const btn = document.getElementById('login-btn');
-        const errorMsg = document.getElementById('login-error');
+      const btn = document.getElementById('login-btn');
+      const errorMsg = document.getElementById('login-error');
 
+      // Prevent default form submission
+      form.addEventListener('submit', (e) => e.preventDefault());
+
+      btn.addEventListener('click', async () => {
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+
+        if (!email || !password) {
+          errorMsg.textContent = 'Please enter both email and password';
+          return;
+        }
+
+        console.log('[Login] Attempting login for:', email);
         btn.disabled = true;
-        btn.innerHTML = '<span>Verifying...</span>';
+        btn.innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; display: inline-block; animation: spin 0.6s linear infinite;"></div>';
         errorMsg.textContent = '';
 
-        // Import dynamically to avoid circular dependencies if any
-        const { loginUser } = await import('../firebase.js');
         const response = await loginUser(email, password);
+        console.log('[Login] Login response:', response.success ? 'Success' : 'Failed');
 
         if (response.success) {
+          console.log('[Login] Navigating to admin page');
           // Use SPA navigation to preserve Auth state
           window.history.pushState(null, null, '/admin');
           window.dispatchEvent(new Event('popstate'));
         } else {
+          console.error('[Login] Login error:', response.error);
           btn.disabled = false;
           btn.innerHTML = '<span>Access Dashboard</span>';
           errorMsg.textContent = 'Access Denied: ' + response.error;

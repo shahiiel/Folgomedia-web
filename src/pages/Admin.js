@@ -1,3 +1,5 @@
+import { auth, onAuthStateChanged, fetchLeads } from '../firebase.js';
+import { signOut } from 'firebase/auth';
 
 export class AdminPage {
   constructor() { }
@@ -55,62 +57,75 @@ export class AdminPage {
 
   async afterRender() {
     try {
+      console.log('[Admin] Starting auth check...');
       const loader = document.getElementById('admin-loader');
       const content = document.getElementById('admin-content');
 
       // Timeout fallback
       const authTimeout = setTimeout(() => {
+        console.warn('[Admin] Auth check timed out after 6 seconds');
         if (loader && loader.style.display !== 'none') {
-          console.warn('Auth check timed out, redirecting to login...');
-          window.history.pushState(null, null, '/login');
-          window.dispatchEvent(new Event('popstate'));
+          loader.innerHTML = `
+            <div style="font-size: 1.5rem; margin-bottom: 1rem;">⚠️</div>
+            <p style="color: var(--color-secondary-yellow);">Connection Timeout</p>
+            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">Unable to verify authentication.</p>
+            <a href="/login" class="btn btn-primary" style="margin-top:1.5rem">Go to Login</a>
+          `;
         }
-      }, 5000);
+      }, 6000);
 
-      // 1. Check Auth & Import
-      const { auth, onAuthStateChanged, fetchLeads } = await import('../firebase.js');
-      const { signOut } = await import('firebase/auth');
-
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        clearTimeout(authTimeout); // Auth responded, clear timeout
+      onAuthStateChanged(auth, async (user) => {
+        clearTimeout(authTimeout);
+        console.log('[Admin] Auth state changed, user:', user ? user.email : 'null');
 
         if (!user) {
-          // SPA Redirect
+          console.log('[Admin] No user found, redirecting to login');
           window.history.pushState(null, null, '/login');
           window.dispatchEvent(new Event('popstate'));
           return;
         }
 
-        // User is logged in: Show Content, Hide Loader
+        console.log('[Admin] User authenticated, showing dashboard');
+        // User is logged in
         if (loader) loader.style.display = 'none';
         if (content) content.style.display = 'block';
 
-        // Load Data
+        // Load dashboard data
         this.loadData(fetchLeads);
       }, (error) => {
-        // Auth Error Handler
+        // Auth error handler
         clearTimeout(authTimeout);
-        console.error("Auth Error:", error);
+        console.error('[Admin] Auth error:', error);
         if (loader) {
-          loader.innerHTML = `<p style="color:red">Auth Error: ${error.message}</p>
-            <a href="/login" class="btn btn-primary" style="margin-top:1rem">Go to Login</a>`;
+          loader.innerHTML = `
+            <div style="font-size: 1.5rem; margin-bottom: 1rem;">❌</div>
+            <p style="color: #ff6b6b; font-size: 1.1rem;">Authentication Error</p>
+            <p style="font-size: 0.85rem; opacity: 0.8; margin: 1rem 0; max-width: 400px;">${error.message}</p>
+            <a href="/login" class="btn btn-primary" style="margin-top:1rem">Go to Login</a>
+          `;
         }
       });
 
-      // Logout logic
+      // Logout button
       const logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
+          console.log('[Admin] Logging out');
           await signOut(auth);
-          window.location.href = '/login';
+          window.history.pushState(null, null, '/login');
+          window.dispatchEvent(new Event('popstate'));
         });
       }
     } catch (err) {
-      console.error("Admin Page Error:", err);
+      console.error('[Admin] Critical error:', err);
       const loader = document.getElementById('admin-loader');
       if (loader) {
-        loader.innerHTML = `<p style="color:red">System Error: ${err.message}</p>
-          <a href="/login" class="btn btn-primary" style="margin-top:1rem">Go to Login</a>`;
+        loader.innerHTML = `
+          <div style="font-size: 1.5rem; margin-bottom: 1rem;">💥</div>
+          <p style="color: #ff6b6b; font-size: 1.1rem;">System Error</p>
+          <p style="font-size: 0.85rem; opacity: 0.8; margin: 1rem 0;">${err.message}</p>
+          <a href="/login" class="btn btn-primary" style="margin-top:1rem">Go to Login</a>
+        `;
       }
     }
   }
