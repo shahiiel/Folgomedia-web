@@ -1,4 +1,5 @@
 import './style.css';
+import { inject } from '@vercel/analytics';
 import { Header } from './components/Header.js';
 import { HomePage } from './pages/Home.js';
 import { AboutPage } from './pages/About.js';
@@ -7,6 +8,7 @@ import { parseQuote, renderResults } from './components/QuoteEstimator.js';
 import { saveLead } from './firebase.js';
 
 const app = document.querySelector('#app');
+inject();
 
 const routes = {
   '/': HomePage,
