@@ -14,6 +14,7 @@ export class Header {
             <ul class="nav-links">
               <li><a href="/" data-link>Home</a></li>
               <li><a href="/services" data-link>Services</a></li>
+              <li><a href="/insights" data-link>Insights</a></li>
               <li><a href="/about" data-link>About Us</a></li>
             </ul>
           </nav>

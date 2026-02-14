@@ -4,6 +4,8 @@ import { Header } from './components/Header.js';
 import { HomePage } from './pages/Home.js';
 import { AboutPage } from './pages/About.js';
 import { ServicesPage } from './pages/Services.js';
+import { InsightsPage } from './pages/Insights.js';
+import { Article2026Page } from './pages/Article2026.js';
 import { parseQuote, renderResults } from './components/QuoteEstimator.js';
 import { saveLead } from './firebase.js';
 
@@ -14,6 +16,8 @@ const routes = {
   '/': HomePage,
   '/about': AboutPage,
   '/services': ServicesPage,
+  '/insights': InsightsPage,
+  '/insights/digital-marketing-2026': Article2026Page,
 };
 
 function router() {
