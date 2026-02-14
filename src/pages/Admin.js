@@ -49,34 +49,66 @@ export class AdminPage {
   }
 
   async afterRender() {
-    // 1. Check Auth & Import
-    const { auth, onAuthStateChanged, fetchLeads } = await import('../firebase.js');
-    const { signOut } = await import('firebase/auth');
-
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    try {
       const loader = document.getElementById('admin-loader');
       const content = document.getElementById('admin-content');
+      const errorMsg = document.createElement('p');
+      errorMsg.style.color = 'red';
+      errorMsg.style.marginTop = '10px';
 
-      if (!user) {
-        window.location.href = '/login';
-        return;
-      }
+      if (loader) loader.appendChild(errorMsg);
 
-      // User is logged in: Show Content, Hide Loader
-      if (loader) loader.style.display = 'none';
-      if (content) content.style.display = 'block';
+      // Timeout fallback: Force redirect if Auth takes too long
+      const authTimeout = setTimeout(() => {
+        if (loader && loader.style.display !== 'none') {
+          console.warn('Auth check timed out, redirecting to login...');
+          window.location.href = '/login';
+        }
+      }, 4000);
 
-      // Load Data
-      this.loadData(fetchLeads);
-    });
+      // 1. Check Auth & Import
+      const { auth, onAuthStateChanged, fetchLeads } = await import('../firebase.js');
+      const { signOut } = await import('firebase/auth');
 
-    // Logout logic
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', async () => {
-        await signOut(auth);
-        window.location.href = '/login';
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        clearTimeout(authTimeout); // Auth responded, clear timeout
+
+        if (!user) {
+          window.location.href = '/login';
+          return;
+        }
+
+        // User is logged in: Show Content, Hide Loader
+        if (loader) loader.style.display = 'none';
+        if (content) content.style.display = 'block';
+
+        // Load Data
+        this.loadData(fetchLeads);
+      }, (error) => {
+        // Auth Error Handler
+        clearTimeout(authTimeout);
+        console.error("Auth Error:", error);
+        if (loader) {
+          loader.innerHTML = `<p style="color:red">Auth Error: ${error.message}</p>
+            <a href="/login" class="btn btn-primary" style="margin-top:1rem">Go to Login</a>`;
+        }
       });
+
+      // Logout logic
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await signOut(auth);
+          window.location.href = '/login';
+        });
+      }
+    } catch (err) {
+      console.error("Admin Page Error:", err);
+      const loader = document.getElementById('admin-loader');
+      if (loader) {
+        loader.innerHTML = `<p style="color:red">System Error: ${err.message}</p>
+          <a href="/login" class="btn btn-primary" style="margin-top:1rem">Go to Login</a>`;
+      }
     }
   }
 
