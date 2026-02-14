@@ -1972,3 +1972,24 @@ h2 {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
+/* Teaser Graphic (Replaces old circle) */
+.teaser-graphic {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.teaser-graphic:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(230, 163, 47, 0.15);
+  border-color: rgba(230, 163, 47, 0.3);
+}
+
+.circle-graphic {
+  display: none;
+}
