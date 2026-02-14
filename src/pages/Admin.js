@@ -7,6 +7,9 @@ export class AdminPage {
       <div class="page admin-page display-flex-center">
         <div id="admin-loader" class="loader">
           <p>Verifying Secure Access...</p>
+          <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem;">
+            Stuck? <a href="/login" class="link" style="color: white; text-decoration: underline;">Click here to Login</a>
+          </p>
         </div>
         <div id="admin-content" style="display: none; width: 100%;">
           <div class="container">
