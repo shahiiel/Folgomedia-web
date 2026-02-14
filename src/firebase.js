@@ -66,4 +66,4 @@ export async function fetchLeads() {
     }
 }
 
-export { auth, onAuthStateChanged, fetchLeads };
+export { auth, onAuthStateChanged };
