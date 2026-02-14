@@ -48,6 +48,11 @@ function router() {
     });
   });
 
+  // Call afterRender if the page has it
+  if (page.afterRender && typeof page.afterRender === 'function') {
+    page.afterRender();
+  }
+
   // Initialize all features
   initAnimations();
   initStatsCounter();
