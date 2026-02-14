@@ -1990,6 +1990,128 @@ h2 {
   border-color: rgba(230, 163, 47, 0.3);
 }
 
-.circle-graphic {
-  display: none;
+
+/* Network Graphic (CSS/SVG Design) */
+.network-graphic {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.network-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  border-radius: 50%;
+  opacity: 0.3;
+  transform: perspective(500px) rotateX(40deg);
+  animation: gridSpin 20s linear infinite;
+}
+
+@keyframes gridSpin {
+  0% {
+    transform: perspective(500px) rotateX(40deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: perspective(500px) rotateX(40deg) rotateZ(360deg);
+  }
+}
+
+.net-node {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--color-secondary-yellow);
+  box-shadow: 0 0 15px var(--color-secondary-yellow);
+  z-index: 2;
+}
+
+.net-node.core {
+  width: 30px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-primary-red);
+  border: 2px solid var(--color-text-white);
+  box-shadow: 0 0 30px var(--color-primary-red);
+  animation: pulse 2s infinite;
+}
+
+.net-node.sat-1 {
+  width: 15px;
+  height: 15px;
+  top: 16%;
+  left: 16%;
+  animation: float 3s infinite ease-in-out;
+}
+
+.net-node.sat-2 {
+  width: 12px;
+  height: 12px;
+  top: 26%;
+  left: 83%;
+  animation: float 4s infinite ease-in-out reverse;
+}
+
+.net-node.sat-3 {
+  width: 18px;
+  height: 18px;
+  top: 83%;
+  left: 16%;
+  animation: float 3.5s infinite ease-in-out 1s;
+}
+
+.net-node.sat-4 {
+  width: 14px;
+  height: 14px;
+  top: 73%;
+  left: 83%;
+  animation: float 4.5s infinite ease-in-out 0.5s;
+}
+
+.net-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.net-lines line {
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 2;
+}
+
+.net-lines .orbit-ring {
+  fill: none;
+  stroke: var(--color-secondary-yellow);
+  stroke-width: 1;
+  opacity: 0.3;
+  animation: spin 10s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }

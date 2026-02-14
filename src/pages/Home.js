@@ -170,8 +170,25 @@ export class HomePage {
               <a href="/about" class="btn btn-primary" data-link>Read Our Story</a>
             </div>
             <div class="teaser-visual fade-up delay-200">
-              <!-- Geometric placeholder -->
-              <img src="/marketing_network_graphic.png" alt="Marketing Collective Network" class="teaser-graphic">
+              <!-- CSS Network Graphic -->
+              <div class="network-graphic">
+                <div class="network-grid"></div>
+                <!-- Core Node -->
+                <div class="net-node core"></div>
+                <!-- Satellite Nodes -->
+                <div class="net-node sat-1"></div>
+                <div class="net-node sat-2"></div>
+                <div class="net-node sat-3"></div>
+                <div class="net-node sat-4"></div>
+                <!-- Connecting Lines (SVG) -->
+                <svg class="net-lines" viewBox="0 0 300 300">
+                  <line x1="150" y1="150" x2="50" y2="50" />
+                  <line x1="150" y1="150" x2="250" y2="80" />
+                  <line x1="150" y1="150" x2="50" y2="250" />
+                  <line x1="150" y1="150" x2="250" y2="220" />
+                  <circle cx="150" cy="150" r="80" stroke-dasharray="10 10" class="orbit-ring" />
+                </svg>
+              </div>
             </div>
           </div>
         </section>
