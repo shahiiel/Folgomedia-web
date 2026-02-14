@@ -2264,3 +2264,121 @@ h2 {
   text-overflow: ellipsis;
   opacity: 0.7;
 }
+
+/* Article Modal */
+.article-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 10000;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+.article-modal.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.article-modal-content {
+  position: relative;
+  background: var(--color-bg-dark);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.article-modal-close {
+  position: sticky;
+  top: var(--spacing-md);
+  left: 100%;
+  transform: translateX(-150%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--color-text-white);
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  margin-bottom: calc(-48px - var(--spacing-md));
+}
+
+.article-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-150%) rotate(90deg);
+}
+
+.article-modal-body {
+  padding: var(--spacing-xl);
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.article-modal-body .article-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+.article-modal-body .article-header {
+  margin-bottom: var(--spacing-xl);
+  text-align: left;
+}
+
+.article-modal-body .back-link {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Blog card hover cursor */
+.blog-card[data-article] {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .article-modal-close {
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+  }
+
+  .article-modal-body {
+    padding: var(--spacing-lg);
+  }
+}
