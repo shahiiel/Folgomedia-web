@@ -72,7 +72,7 @@ export class AdminPage {
       }, 6000);
 
       // Dynamic import to avoid build issues
-      const { auth, onAuth StateChanged, fetchLeads } = await import('../firebase.js');
+      const { auth, onAuthStateChanged, fetchLeads } = await import('../firebase.js');
       const { signOut } = await import('firebase/auth');
 
       onAuthStateChanged(auth, async (user) => {

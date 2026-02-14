@@ -13,10 +13,10 @@ export class LoginPage {
           
           <form id="login-form" class="login-form">
             <div class="form-group">
-              <input type="email" id="email" placeholder="Admin Email" required>
+              <input type="email" id="login-email" placeholder="Admin Email" required>
             </div>
             <div class="form-group">
-              <input type="password" id="password" placeholder="Password" required>
+              <input type="password" id="login-password" placeholder="Password" required>
             </div>
             
             <button type="submit" class="btn btn-primary btn-block" id="login-btn">
