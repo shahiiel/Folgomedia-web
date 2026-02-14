@@ -4,11 +4,13 @@ export class AdminPage {
 
   render() {
     return `
-      <div class="page admin-page display-flex-center">
-        <div id="admin-loader" class="loader">
-          <p>Verifying Secure Access...</p>
-          <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem;">
-            Stuck? <a href="/login" class="link" style="color: white; text-decoration: underline;">Click here to Login</a>
+      <div class="page admin-page display-flex-center" style="font-family: var(--font-main); color: var(--color-text-white);">
+        <div id="admin-loader" class="loader" style="text-align: center; margin-top: 20vh;">
+          <div style="font-size: 1.5rem; margin-bottom: 1rem;">🔐</div>
+          <p style="font-size: 1.2rem; letter-spacing: 1px;">Verifying Secure Access...</p>
+          <div class="spinner" style="width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--color-secondary-yellow); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto;"></div>
+          <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 2rem;">
+            Taking too long? <a href="/login" class="link" style="color: var(--color-secondary-yellow); text-decoration: underline; cursor: pointer;">Click here to Login</a>
           </p>
         </div>
         <div id="admin-content" style="display: none; width: 100%;">
@@ -55,19 +57,15 @@ export class AdminPage {
     try {
       const loader = document.getElementById('admin-loader');
       const content = document.getElementById('admin-content');
-      const errorMsg = document.createElement('p');
-      errorMsg.style.color = 'red';
-      errorMsg.style.marginTop = '10px';
 
-      if (loader) loader.appendChild(errorMsg);
-
-      // Timeout fallback: Force redirect if Auth takes too long
+      // Timeout fallback
       const authTimeout = setTimeout(() => {
         if (loader && loader.style.display !== 'none') {
           console.warn('Auth check timed out, redirecting to login...');
-          window.location.href = '/login';
+          window.history.pushState(null, null, '/login');
+          window.dispatchEvent(new Event('popstate'));
         }
-      }, 4000);
+      }, 5000);
 
       // 1. Check Auth & Import
       const { auth, onAuthStateChanged, fetchLeads } = await import('../firebase.js');
@@ -77,7 +75,9 @@ export class AdminPage {
         clearTimeout(authTimeout); // Auth responded, clear timeout
 
         if (!user) {
-          window.location.href = '/login';
+          // SPA Redirect
+          window.history.pushState(null, null, '/login');
+          window.dispatchEvent(new Event('popstate'));
           return;
         }
 

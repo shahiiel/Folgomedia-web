@@ -49,7 +49,9 @@ export class LoginPage {
         const response = await loginUser(email, password);
 
         if (response.success) {
-          window.location.href = '/admin'; // Router will handle the change
+          // Use SPA navigation to preserve Auth state
+          window.history.pushState(null, null, '/admin');
+          window.dispatchEvent(new Event('popstate'));
         } else {
           btn.disabled = false;
           btn.innerHTML = '<span>Access Dashboard</span>';
