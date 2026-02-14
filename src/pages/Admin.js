@@ -80,8 +80,8 @@ export class AdminPage {
 
         if (!user) {
           console.log('[Admin] No user found, redirecting to login');
-          window.history.pushState(null, null, '/login');
-          window.dispatchEvent(new Event('popstate'));
+          // Use full reload to reset state
+          window.location.href = '/login';
           return;
         }
 
@@ -112,8 +112,7 @@ export class AdminPage {
         logoutBtn.addEventListener('click', async () => {
           console.log('[Admin] Logging out');
           await signOut(auth);
-          window.history.pushState(null, null, '/login');
-          window.dispatchEvent(new Event('popstate'));
+          window.location.href = '/login';
         });
       }
     } catch (err) {

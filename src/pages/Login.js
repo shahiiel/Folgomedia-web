@@ -58,10 +58,15 @@ export class LoginPage {
         console.log('[Login] Login response:', response.success ? 'Success' : 'Failed');
 
         if (response.success) {
-          console.log('[Login] Navigating to admin page');
-          // Use SPA navigation to preserve Auth state
-          window.history.pushState(null, null, '/admin');
-          window.dispatchEvent(new Event('popstate'));
+          console.log('[Login] Login successful, waiting for auth sync...');
+          btn.innerHTML = '<span>Success! Redirecting...</span>';
+
+          // Wait a moment for Firebase to sync auth state
+          setTimeout(() => {
+            console.log('[Login] Navigating to admin page');
+            // Use full page reload to ensure auth state is loaded
+            window.location.href = '/admin';
+          }, 500);
         } else {
           console.error('[Login] Login error:', response.error);
           btn.disabled = false;
