@@ -1,6 +1,3 @@
-import { auth, onAuthStateChanged, fetchLeads } from '../firebase.js';
-import { signOut } from 'firebase/auth';
-
 export class AdminPage {
   constructor() { }
 
@@ -73,6 +70,10 @@ export class AdminPage {
           `;
         }
       }, 6000);
+
+      // Dynamic import to avoid build issues
+      const { auth, onAuth StateChanged, fetchLeads } = await import('../firebase.js');
+      const { signOut } = await import('firebase/auth');
 
       onAuthStateChanged(auth, async (user) => {
         clearTimeout(authTimeout);

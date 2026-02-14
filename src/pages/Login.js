@@ -1,5 +1,3 @@
-import { loginUser } from '../firebase.js';
-
 export class LoginPage {
   constructor() { }
 
@@ -54,6 +52,8 @@ export class LoginPage {
         btn.innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; display: inline-block; animation: spin 0.6s linear infinite;"></div>';
         errorMsg.textContent = '';
 
+        // Dynamic import
+        const { loginUser } = await import('../firebase.js');
         const response = await loginUser(email, password);
         console.log('[Login] Login response:', response.success ? 'Success' : 'Failed');
 
