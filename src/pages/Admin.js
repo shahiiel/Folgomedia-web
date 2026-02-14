@@ -58,7 +58,7 @@ export class AdminPage {
       const content = document.getElementById('admin-content');
 
       if (!user) {
-        window.location.hash = '/login';
+        window.location.href = '/login';
         return;
       }
 
@@ -75,7 +75,7 @@ export class AdminPage {
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async () => {
         await signOut(auth);
-        window.location.hash = '/login';
+        window.location.href = '/login';
       });
     }
   }

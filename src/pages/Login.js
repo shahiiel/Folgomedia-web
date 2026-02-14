@@ -1,9 +1,9 @@
 
 export class LoginPage {
-    constructor() { }
+  constructor() { }
 
-    render() {
-        return `
+  render() {
+    return `
       <div class="page login-page">
         <div class="login-container fade-up">
           <div class="login-header">
@@ -28,34 +28,34 @@ export class LoginPage {
         </div>
       </div>
     `;
-    }
+  }
 
-    afterRender() {
-        const form = document.getElementById('login-form');
-        if (form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const btn = document.getElementById('login-btn');
-                const errorMsg = document.getElementById('login-error');
+  afterRender() {
+    const form = document.getElementById('login-form');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('login-btn');
+        const errorMsg = document.getElementById('login-error');
 
-                btn.disabled = true;
-                btn.innerHTML = '<span>Verifying...</span>';
-                errorMsg.textContent = '';
+        btn.disabled = true;
+        btn.innerHTML = '<span>Verifying...</span>';
+        errorMsg.textContent = '';
 
-                // Import dynamically to avoid circular dependencies if any
-                const { loginUser } = await import('../firebase.js');
-                const response = await loginUser(email, password);
+        // Import dynamically to avoid circular dependencies if any
+        const { loginUser } = await import('../firebase.js');
+        const response = await loginUser(email, password);
 
-                if (response.success) {
-                    window.location.hash = '/admin'; // Router will handle the change
-                } else {
-                    btn.disabled = false;
-                    btn.innerHTML = '<span>Access Dashboard</span>';
-                    errorMsg.textContent = 'Access Denied: ' + response.error;
-                }
-            });
+        if (response.success) {
+          window.location.href = '/admin'; // Router will handle the change
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Access Dashboard</span>';
+          errorMsg.textContent = 'Access Denied: ' + response.error;
         }
+      });
     }
+  }
 }
