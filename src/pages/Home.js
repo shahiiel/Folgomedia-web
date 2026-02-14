@@ -171,7 +171,7 @@ export class HomePage {
             </div>
             <div class="teaser-visual fade-up delay-200">
               <!-- Geometric placeholder -->
-              <div class="circle-graphic"></div>
+              <img src="/marketing_network_graphic.png" alt="Marketing Collective Network" class="teaser-graphic">
             </div>
           </div>
         </section>
