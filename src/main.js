@@ -48,7 +48,10 @@ function router() {
     });
   });
 
-  // Call afterRender if the page has it
+  // Call afterRender if the header or page has it
+  if (header.afterRender && typeof header.afterRender === 'function') {
+    header.afterRender();
+  }
   if (page.afterRender && typeof page.afterRender === 'function') {
     page.afterRender();
   }
