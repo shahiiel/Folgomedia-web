@@ -63,6 +63,13 @@ function router() {
   initEstimator();
   initLeadForm();
   initProcessDrag();
+
+  // Dismiss the initial loader once the app has rendered
+  const loader = document.getElementById('app-loader');
+  if (loader) {
+    loader.classList.add('hidden');
+    setTimeout(() => loader.remove(), 350);
+  }
 }
 
 function initAnimations() {
